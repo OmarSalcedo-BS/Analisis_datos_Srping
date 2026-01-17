@@ -6,7 +6,12 @@ URL_API = "http://localhost:8080/api/calificaciones"
 
 def cargar_datos() -> pd.DataFrame:
     """
-    Carga los datos desde la API y aplana la estructura JSON (Calificaciones).
+    Carga los datos desde la API y aplana la estructura JSON.
+
+    Returns:
+        pd.DataFrame: DataFrame con las columnas 'id_calificacion', 'puntuacion',
+                      'comentario', 'cliente', 'email_cliente', 'nombre', 'precio'.
+                      Retorna un DataFrame vacío en caso de error.
     """
     try:
         response = requests.get(URL_API)
@@ -40,6 +45,12 @@ def cargar_datos() -> pd.DataFrame:
 def manejar_nulos(df: pd.DataFrame) -> pd.DataFrame:
     """
     Rellena valores nulos con valores por defecto.
+
+    Args:
+        df (pd.DataFrame): DataFrame con datos crudos.
+
+    Returns:
+        pd.DataFrame: DataFrame sin valores nulos en columnas críticas.
     """
     df_procesado = df.copy()
 
@@ -62,8 +73,13 @@ def manejar_nulos(df: pd.DataFrame) -> pd.DataFrame:
 
 def estandarizar_datos(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Estandariza texto (strip espacios, mantiene mayúsculas/minúsculas originales).
-    Manteniene columnas numéricas intactas para análisis.
+    Estandariza columnas de texto y mantiene columnas numéricas.
+
+    Args:
+        df (pd.DataFrame): DataFrame con datos.
+
+    Returns:
+        pd.DataFrame: DataFrame con texto en minúsculas/strip y formatos corregidos.
     """
     df_procesado = df.copy()
 
@@ -102,31 +118,42 @@ def preparar_dataframe_analisis(df: pd.DataFrame) -> pd.DataFrame:
     return agrupado
 
 
+def obtener_datos_fidelidad() -> pd.DataFrame:
+    """
+    Consulta la API y procesa los datos para encontrar la fidelidad de los clientes
+    basada en la cantidad de platillos únicos que han probado.
 
-def obtener_datos_fidelidad():
+    Returns:
+        pd.DataFrame: DataFrame con columnas 'Cliente' y 'Platillos_Distintos',
+                      ordenado de mayor a menor variedad.
+    """
     # Asumiendo que consultas el endpoint de calificaciones
-    url = "http://localhost:8080/api/calificaciones" 
+    url = "http://localhost:8080/api/calificaciones"
     try:
         response = requests.get(url)
         datos = response.json()
-        
+
         registros = []
         for cal in datos:
             # Extraemos los datos según tu estructura JSON
-            registros.append({
-                'usuario_nombre': cal['usuario']['nombreCompleto'],
-                'platillo_nombre': cal['platillo']['nombre']
-            })
-            
+            registros.append(
+                {
+                    "usuario_nombre": cal["usuario"]["nombreCompleto"],
+                    "platillo_nombre": cal["platillo"]["nombre"],
+                }
+            )
+
         df = pd.DataFrame(registros)
-        
+
         # Agrupamos por usuario y contamos cuántos platillos ÚNICOS ha puntuado
-        fidelidad = df.groupby('usuario_nombre')['platillo_nombre'].nunique().reset_index()
-        fidelidad.columns = ['Cliente', 'Platillos_Distintos']
-        
+        fidelidad = (
+            df.groupby("usuario_nombre")["platillo_nombre"].nunique().reset_index()
+        )
+        fidelidad.columns = ["Cliente", "Platillos_Distintos"]
+
         # Ordenamos de mayor a menor
-        return fidelidad.sort_values(by='Platillos_Distintos', ascending=False)
-        
+        return fidelidad.sort_values(by="Platillos_Distintos", ascending=False)
+
     except Exception as e:
         print(f"Error procesando fidelidad: {e}")
         return pd.DataFrame()

@@ -3,15 +3,17 @@ import seaborn as sns
 import os
 
 
-
 def graficar_raking_calidad(df, folder="resultados"):
     """
     Genera un gráfico de barras apiladas para visualizar la distribución de calificaciones
     por platillo.
 
     Args:
-        df (pd.DataFrame): DataFrame con las columnas 'platillo' y 'puntuacion'.
+        df (pd.DataFrame): DataFrame con las columnas 'nombre' y 'promedio_calificacion'.
         folder (str): Carpeta donde se guardará el gráfico.
+
+    Returns:
+        str: Ruta relativa del archivo de imagen generado.
     """
 
     # Crea la carpeta si esta no existe en el sistema
@@ -40,6 +42,9 @@ def graficar_precio_vs_calidad(df, folder="resultados"):
     Args:
         df (pd.DataFrame): DataFrame con las columnas 'precio', 'promedio_calificacion' y 'total_votos'.
         folder (str): Carpeta donde se guardará el gráfico.
+
+    Returns:
+        str: Ruta relativa del archivo de imagen generado.
     """
 
     if not os.path.exists(folder):
@@ -49,62 +54,82 @@ def graficar_precio_vs_calidad(df, folder="resultados"):
     plt.figure(figsize=(12, 8))
 
     sns.scatterplot(
-        data=df, 
-        x='precio', 
-        y='promedio_calificacion', 
-        size='total_votos',      # Puntos más grandes = más popular
-        hue='promedio_calificacion', # Cambia de color según la nota
-        palette='viridis',       # Escala de colores elegante
-        sizes=(100, 1000),       # Rango de tamaño de los puntos
-        alpha=0.7                # Transparencia para ver puntos encimados
+        data=df,
+        x="precio",
+        y="promedio_calificacion",
+        size="total_votos",  # Puntos más grandes = más popular
+        hue="promedio_calificacion",  # Cambia de color según la nota
+        palette="viridis",  # Escala de colores elegante
+        sizes=(100, 1000),  # Rango de tamaño de los puntos
+        alpha=0.7,  # Transparencia para ver puntos encimados
     )
 
     for i in range(df.shape[0]):
         plt.text(
-            df.precio[i]+0.2,
+            df.precio[i] + 0.2,
             df.promedio_calificacion[i],
             df.nombre[i],
             fontsize=9,
-            alpha=0.8
+            alpha=0.8,
         )
 
-    plt.axhline(df['promedio_calificacion'].mean(), color='red', linestyle='--', alpha=0.5, label='Promedio Notas')
-    plt.axvline(df['precio'].mean(), color='blue', linestyle='--', alpha=0.5, label='Promedio Precio')
+    plt.axhline(
+        df["promedio_calificacion"].mean(),
+        color="red",
+        linestyle="--",
+        alpha=0.5,
+        label="Promedio Notas",
+    )
+    plt.axvline(
+        df["precio"].mean(),
+        color="blue",
+        linestyle="--",
+        alpha=0.5,
+        label="Promedio Precio",
+    )
 
-    plt.title('Matriz de Valor: Precio vs. Calificación Promedio', fontsize=16)
-    plt.xlabel('Precio ($)', fontsize=12)
-    plt.ylabel('Calificación (1-5 Estrellas)', fontsize=12)
-    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.grid(True, linestyle=':', alpha=0.6)
-    
+    plt.title("Matriz de Valor: Precio vs. Calificación Promedio", fontsize=16)
+    plt.xlabel("Precio ($)", fontsize=12)
+    plt.ylabel("Calificación (1-5 Estrellas)", fontsize=12)
+    plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+    plt.grid(True, linestyle=":", alpha=0.6)
+
     plt.tight_layout()
     plt.savefig(path)
     plt.close()
     return path
 
 
-def graficar_clientes_frecuentes(df, folder="resultados", output_path='resultados/clientes_frecuentes.png'):
+def graficar_clientes_frecuentes(
+    df, folder="resultados", output_path="resultados/clientes_frecuentes.png"
+):
+    """
+    Genera un gráfico de barras mostrando los clientes que han probado mayor variedad de platillos.
+
+    Args:
+        df (pd.DataFrame): DataFrame con columnas 'Cliente' y 'Platillos_Distintos'.
+        folder (str): Carpeta destino (no usada directamente si se pasa output_path, pero mantenida por consistencia).
+        output_path (str): Ruta completa del archivo de salida.
+
+    Returns:
+        str: Ruta del archivo generado.
+    """
+
     plt.figure(figsize=(10, 6))
-    
+
     # Tomamos solo los top 10 para que no se amontone el gráfico
     top_10 = df.head(10)
-    
-    sns.barplot(
-        data=top_10, 
-        x='Platillos_Distintos', 
-        y='Cliente', 
-        palette='viridis'
-    )
-    
-    plt.title('Top 10 Clientes: Diversidad de Experiencia en el Menú', fontsize=14)
-    plt.xlabel('Número de Platillos Diferentes Calificados')
-    plt.ylabel('Nombre del Cliente')
-    
+
+    sns.barplot(data=top_10, x="Platillos_Distintos", y="Cliente", palette="viridis")
+
+    plt.title("Top 10 Clientes: Diversidad de Experiencia en el Menú", fontsize=14)
+    plt.xlabel("Número de Platillos Diferentes Calificados")
+    plt.ylabel("Nombre del Cliente")
+
     # Aseguramos que el eje X use números enteros
-    plt.xticks(range(0, int(top_10['Platillos_Distintos'].max()) + 1))
-    
+    plt.xticks(range(0, int(top_10["Platillos_Distintos"].max()) + 1))
+
     plt.tight_layout()
     plt.savefig(output_path)
     plt.close()
     return output_path
-
