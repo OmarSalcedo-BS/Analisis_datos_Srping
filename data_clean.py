@@ -6,105 +6,92 @@ URL_API = "http://localhost:8080/api/calificaciones"
 
 def cargar_datos() -> pd.DataFrame:
     """
-    Carga los datos desde la API y los retorna como un DataFrame.
+    Carga los datos desde la API y aplana la estructura JSON (Calificaciones).
     """
     try:
         response = requests.get(URL_API)
         response.raise_for_status()
         datos_raw = response.json()
-        
+
         lista_procesada = []
-        
-        for p in datos_raw:
-            # Extraemos las puntuaciones de la lista anidada
-            puntuaciones = [c['puntuacion'] for c in p.get('calificaciones', [])]
-            
-            # Calculamos el promedio (si no hay calificaciones, ponemos 0)
-            promedio = sum(puntuaciones) / len(puntuaciones) if puntuaciones else 0
-            
-            lista_procesada.append({
-                'nombre': p['nombre'],
-                'precio': p['precio'],
-                'promedio_calificacion': promedio,
-                'total_votos': len(puntuaciones)
-            })
-            
+
+        for item in datos_raw:
+            # Manejo seguro de diccionarios anidados con .get()
+            usuario = item.get("usuario") or {}
+            platillo = item.get("platillo") or {}
+
+            fila = {
+                "id_calificacion": item.get("idCalificacion"),
+                "puntuacion": item.get("puntuacion"),
+                "comentario": item.get("comentarioCorto"),
+                "cliente": usuario.get("nombreCompleto"),
+                "email_cliente": usuario.get("email"),
+                "platillo": platillo.get("nombre"),
+                "precio": platillo.get("precio"),
+            }
+            lista_procesada.append(fila)
+
         return pd.DataFrame(lista_procesada)
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error al cargar datos: {e}")
         return pd.DataFrame()
 
 
 def manejar_nulos(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Maneja los valores nulos en el DataFrame usando dropna para eliminar datos críticos o faltantes
-    y fillna para reemplazar los valores nulos de una columna por una cadena de texto.
+    Rellena valores nulos con valores por defecto.
     """
     df_procesado = df.copy()
-    print("\nManejo de valores nulos:")
 
-    filas_iniciales = len(df_procesado)
-    df_procesado.dropna(subset=['Texto', 'Sentimiento'], inplace=True)
-    eliminadas = filas_iniciales - len(df_procesado)
-    print(f"Filas eliminadas: {eliminadas} filas (datos criticos faltantes en el texto, sentimiento o autor)")#Se eliminan filas con datos criticos faltantes
+    # Columnas de texto
+    cols_texto = ["comentario", "cliente", "email_cliente", "platillo"]
+    for col in cols_texto:
+        if col in df_procesado.columns:
+            df_procesado[col] = df_procesado[col].fillna("Desconocido")
 
-    df_procesado['Sentimiento'].fillna('No clasificado', inplace=True) # Rellena valores nulos en 'Sentimiento' con 'No clasificado'
-    df_procesado['Longitud_Caracteres'].fillna(0, inplace=True) # Rellena valores nulos en 'Longitud_Caracteres' con 0
-    df_procesado['Fuente/Autor'].fillna('No clasificado', inplace=True) # Rellena valores nulos en 'Fuente/Autor' con 'No clasificado'
+    # Columnas numéricas
+    if "puntuacion" in df_procesado.columns:
+        df_procesado["puntuacion"] = df_procesado["puntuacion"].fillna(0)
 
+    if "precio" in df_procesado.columns:
+        df_procesado["precio"] = df_procesado["precio"].fillna(0.0)
 
-    print("Se rellenó 'Sentimiento' con 'No clasificado' y 'Longitud_Caracteres' con 0")
-    print("Se rellenó 'Fuente/Autor' con 'No clasificado'")
-    print(f"Total de filas: {len(df_procesado)}")
-    print("\nManejo de valores nulos completado")
+    print("Valores nulos manejados correctamente.")
     return df_procesado
-    
 
 
-
-def estandarizar_texto(df: pd.DataFrame, columna: str) -> pd.DataFrame:
+def estandarizar_datos(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Estandariza una columna de texto, convirtiendo a minúsculas y eliminando
-    espacios extra, reemplazando los espacios en blanco por un solo espacio.
+    1. Estandariza texto (strip espacios, mantiene mayúsculas/minúsculas originales).
+    2. Formatea el precio con signo de dolar ($).
     """
+    df_procesado = df.copy()
 
-    df_procesado = df.copy() #Siempre en cada función se crea una copia del DataFrame original.
-    print(f"\nEstandarizando la columna '{columna}'...")
+    # Estandarización de texto
+    cols_texto = ["comentario", "cliente", "platillo"]
+    for col in cols_texto:
+        if col in df_procesado.columns:
+            # Convertir a string y quitar espacios inicio/fin solamente
+            df_procesado[col] = df_procesado[col].astype(str).str.strip()
 
-    if df_procesado[columna].dtype == 'object':
-        df_procesado[columna] = df_procesado[columna].str.lower() #Se convierte a minúsculas
+    # Formateo de precio con $
+    if "precio" in df_procesado.columns:
+        # Aseguramos que sea float para el formateo, luego a string
+        df_procesado["precio"] = df_procesado["precio"].apply(
+            lambda x: f"$ {float(x):.2f}" if pd.notnull(x) else "$ 0.00"
+        )
 
-        df_procesado[columna] = df_procesado[columna].str.strip() #Se eliminan espacios extra
-        
-        df_procesado[columna] = df_procesado[columna].str.replace(r'\s+', ' ', regex=True) #Se reemplazan los espacios en blanco por un solo espacio
+    print("Texto estandarizado y precios formateados.")
+    return df_procesado
 
-        print(f"Columna '{columna}' unificada a minúsculas y espacios extra eliminados con éxito")
+
+if __name__ == "__main__":
+    # Bloque de prueba
+    df = cargar_datos()
+    if not df.empty:
+        df = manejar_nulos(df)
+        df = estandarizar_datos(df)
+        print("\nDataFrame Resultante:")
+        print(df.tail())
     else:
-        print(f"La columna '{columna}' tiene dtype='{df_procesado[columna].dtype}' (no 'object')")
-        print("Solo se pueden estandarizar columnas de tipo 'object' (texto). Columna omitida.")  
-    
-    print("\nEstandarización completada")
-    return df_procesado
-
-
-
-
-def limpieza_especifica(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Función de limpieza específica (eliminar símbolos y recalcular longitud).
-    """
-    df_procesado = df.copy()
-    
-    print("\n[LIMPIEZA ESPECÍFICA DE METADATOS]")
-    
-    df_procesado['Fuente/Autor'] = df_procesado['Fuente/Autor'].astype(str).str.replace(r'[$,!"]', '', regex=True)
-    df_procesado['Fuente/Autor'] = df_procesado['Fuente/Autor'].str.strip()
-    df_procesado['Fuente/Autor'] = df_procesado['Fuente/Autor'].str.lower()
-    print("- Símbolos especiales eliminados y convertido a minúsculas en 'Fuente/Autor'.")
-    
-    df_procesado['Longitud_Caracteres'] = df_procesado['Texto'].astype(str).str.len()
-    print("- Recalculada la 'Longitud_Caracteres' basándose en el texto limpio.")
-    
-    print("Limpieza específica completada.")
-    
-    return df_procesado 
+        print("No se pudieron cargar datos para la prueba.")

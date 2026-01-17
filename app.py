@@ -2,6 +2,7 @@ import os
 import data_clean
 import pandas as pd
 
+
 """
 Momento 3 -  Fecha límite enero 22 de enero.
 Construir una aplicación de análisis de datos en Python. 
@@ -22,4 +23,3 @@ def limpiar_consola():
         os.system('cls')
     else:
         os.system('clear')
-
