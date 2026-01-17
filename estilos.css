@@ -1,0 +1,89 @@
+:root {
+    --primary-color: #2c3e50;
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-main: #344767;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 40px;
+    letter-spacing: -1px;
+}
+
+/* Contenedor de Gráficos */
+.container-graficos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+/* Tarjetas (Cards) */
+.card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: #8392ab;
+    text-transform: uppercase;
+    border-bottom: 1px solid #f0f2f5;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/* Contenedor de Tabla */
+.container-tabla {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Estilo para la Tabla DataTables */
+#tabla_analisis {
+    border: none !important;
+    font-size: 0.9rem;
+}
+
+#tabla_analisis thead th {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 15px;
+    border-bottom: 2px solid #e9ecef !important;
+}
+
+#tabla_analisis tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f2f5;
+}

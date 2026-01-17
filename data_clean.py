@@ -26,7 +26,7 @@ def cargar_datos() -> pd.DataFrame:
                 "comentario": item.get("comentarioCorto"),
                 "cliente": usuario.get("nombreCompleto"),
                 "email_cliente": usuario.get("email"),
-                "platillo": platillo.get("nombre"),
+                "nombre": platillo.get("nombre"),
                 "precio": platillo.get("precio"),
             }
             lista_procesada.append(fila)
@@ -44,7 +44,7 @@ def manejar_nulos(df: pd.DataFrame) -> pd.DataFrame:
     df_procesado = df.copy()
 
     # Columnas de texto
-    cols_texto = ["comentario", "cliente", "email_cliente", "platillo"]
+    cols_texto = ["comentario", "cliente", "email_cliente", "nombre"]
     for col in cols_texto:
         if col in df_procesado.columns:
             df_procesado[col] = df_procesado[col].fillna("Desconocido")
@@ -62,25 +62,71 @@ def manejar_nulos(df: pd.DataFrame) -> pd.DataFrame:
 
 def estandarizar_datos(df: pd.DataFrame) -> pd.DataFrame:
     """
-    1. Estandariza texto (strip espacios, mantiene mayúsculas/minúsculas originales).
-    2. Formatea el precio con signo de dolar ($).
+    Estandariza texto (strip espacios, mantiene mayúsculas/minúsculas originales).
+    Manteniene columnas numéricas intactas para análisis.
     """
     df_procesado = df.copy()
 
     # Estandarización de texto
-    cols_texto = ["comentario", "cliente", "platillo"]
+    cols_texto = ["comentario", "cliente", "nombre"]
     for col in cols_texto:
         if col in df_procesado.columns:
             # Convertir a string y quitar espacios inicio/fin solamente
             df_procesado[col] = df_procesado[col].astype(str).str.strip()
 
-    # Formateo de precio con $
-    if "precio" in df_procesado.columns:
-        # Aseguramos que sea float para el formateo, luego a string
-        df_procesado["precio"] = df_procesado["precio"].apply(
-            lambda x: f"$ {float(x):.2f}" if pd.notnull(x) else "$ 0.00"
-        )
-
-    print("Texto estandarizado y precios formateados.")
+    print("Texto estandarizado correctamente.")
     return df_procesado
 
+
+def preparar_dataframe_analisis(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Agrupa los datos por platillo ('nombre') para calcular estadísticas
+    necesarias para las gráficas:
+    - promedio_calificacion (media de puntuacion)
+    - total_votos (conteo de puntuacion)
+    - precio (toma el primer valor encontrado)
+    """
+    if df.empty or "nombre" not in df.columns:
+        return pd.DataFrame()
+
+    agrupado = (
+        df.groupby("nombre")
+        .agg(
+            promedio_calificacion=("puntuacion", "mean"),
+            total_votos=("puntuacion", "count"),
+            precio=("precio", "first"),
+        )
+        .reset_index()
+    )
+
+    return agrupado
+
+
+
+def obtener_datos_fidelidad():
+    # Asumiendo que consultas el endpoint de calificaciones
+    url = "http://localhost:8080/api/calificaciones" 
+    try:
+        response = requests.get(url)
+        datos = response.json()
+        
+        registros = []
+        for cal in datos:
+            # Extraemos los datos según tu estructura JSON
+            registros.append({
+                'usuario_nombre': cal['usuario']['nombreCompleto'],
+                'platillo_nombre': cal['platillo']['nombre']
+            })
+            
+        df = pd.DataFrame(registros)
+        
+        # Agrupamos por usuario y contamos cuántos platillos ÚNICOS ha puntuado
+        fidelidad = df.groupby('usuario_nombre')['platillo_nombre'].nunique().reset_index()
+        fidelidad.columns = ['Cliente', 'Platillos_Distintos']
+        
+        # Ordenamos de mayor a menor
+        return fidelidad.sort_values(by='Platillos_Distintos', ascending=False)
+        
+    except Exception as e:
+        print(f"Error procesando fidelidad: {e}")
+        return pd.DataFrame()

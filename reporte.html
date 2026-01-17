@@ -1,0 +1,964 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Reporte Sabor Urbano</title>
+        <link rel="stylesheet" href="estilos.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    </head>
+    <body>
+        <h1>Reporte de Análisis Del restaurante</h1>
+        
+        <div class="container-graficos">
+            <div class="card">
+                <h3>Ranking de Calidad</h3>
+                <img src="resultados/rakingCalidad.png" width="100%">
+            </div>
+            <div class="card">
+                <h3>Análisis de Precio</h3>
+                <img src="resultados/precio_vs_calidad.png" width="100%">
+            </div>
+            <div class="card">
+                <h3>Análisis de Clientes Frecuentes</h3>
+                <img src="resultados/clientes_frecuentes.png" width="100%">
+            </div>
+        </div>
+
+        <h2>Detalle de los Datos</h2>
+        <div class="container-tabla">
+            <table border="1" class="dataframe display shadow" id="tabla_analisis">
+  <thead>
+    <tr style="text-align: right;">
+      <th>id_calificacion</th>
+      <th>puntuacion</th>
+      <th>comentario</th>
+      <th>cliente</th>
+      <th>email_cliente</th>
+      <th>nombre</th>
+      <th>precio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>21</td>
+      <td>5</td>
+      <td>Excelente sabor</td>
+      <td>Juan Pérez</td>
+      <td>juan.perez@email.com</td>
+      <td>Corte New York</td>
+      <td>$ 25.99</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>3</td>
+      <td>Un poco salado</td>
+      <td>Carlos Rodríguez</td>
+      <td>carlos.rodriguez@email.com</td>
+      <td>Corte New York</td>
+      <td>$ 25.99</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>5</td>
+      <td>Increíble</td>
+      <td>Ana Martínez</td>
+      <td>ana.martinez@email.com</td>
+      <td>Corte New York</td>
+      <td>$ 25.99</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>4</td>
+      <td>Muy bueno</td>
+      <td>Luis Sánchez</td>
+      <td>luis.sanchez@email.com</td>
+      <td>Corte New York</td>
+      <td>$ 25.99</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>5</td>
+      <td>Mejor de lo esperado</td>
+      <td>Laura López</td>
+      <td>laura.lopez@email.com</td>
+      <td>Nachos con Queso</td>
+      <td>$ 8.50</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>2</td>
+      <td>Frío al llegar</td>
+      <td>Pedro Gómez</td>
+      <td>pedro.gomez@email.com</td>
+      <td>Nachos con Queso</td>
+      <td>$ 8.50</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>3</td>
+      <td>Normal</td>
+      <td>Elena Díaz</td>
+      <td>elena.diaz@email.com</td>
+      <td>Nachos con Queso</td>
+      <td>$ 8.50</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>5</td>
+      <td>Delicioso!</td>
+      <td>Sergio Torres</td>
+      <td>sergio.torres@email.com</td>
+      <td>Tacos de Pastor</td>
+      <td>$ 10.50</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>5</td>
+      <td>Sabor auténtico</td>
+      <td>Isabel Ruiz</td>
+      <td>isabel.ruiz@email.com</td>
+      <td>Tacos de Pastor</td>
+      <td>$ 10.50</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>4</td>
+      <td>Picante pero rico</td>
+      <td>David Vázquez</td>
+      <td>david.vazquez@email.com</td>
+      <td>Tacos de Pastor</td>
+      <td>$ 10.50</td>
+    </tr>
+    <tr>
+      <td>31</td>
+      <td>3</td>
+      <td>Muy dulce para mi gusto</td>
+      <td>Marta Castro</td>
+      <td>marta.castro@email.com</td>
+      <td>Cheesecake de Fresa</td>
+      <td>$ 6.50</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>5</td>
+      <td>El mejor cheesecake</td>
+      <td>Javier Morales</td>
+      <td>javier.morales@email.com</td>
+      <td>Cheesecake de Fresa</td>
+      <td>$ 6.50</td>
+    </tr>
+    <tr>
+      <td>33</td>
+      <td>5</td>
+      <td>Presentación impecable</td>
+      <td>Lucía Ortiz</td>
+      <td>lucia.ortiz@email.com</td>
+      <td>Cheesecake de Fresa</td>
+      <td>$ 6.50</td>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>4</td>
+      <td>Refrescante</td>
+      <td>Diego Gutiérrez</td>
+      <td>diego.gutierrez@email.com</td>
+      <td>Limonada Imperial</td>
+      <td>$ 3.50</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>2</td>
+      <td>Poca cantidad</td>
+      <td>Carmen Reyes</td>
+      <td>carmen.reyes@email.com</td>
+      <td>Limonada Imperial</td>
+      <td>$ 3.50</td>
+    </tr>
+    <tr>
+      <td>36</td>
+      <td>5</td>
+      <td>Corte perfecto</td>
+      <td>Pablo Jiménez</td>
+      <td>pablo.jimenez@email.com</td>
+      <td>Salmon a la Parrilla</td>
+      <td>$ 22.50</td>
+    </tr>
+    <tr>
+      <td>37</td>
+      <td>2</td>
+      <td>Termino equivocado</td>
+      <td>Adriana Silva</td>
+      <td>adriana.silva@email.com</td>
+      <td>Salmon a la Parrilla</td>
+      <td>$ 22.50</td>
+    </tr>
+    <tr>
+      <td>38</td>
+      <td>4</td>
+      <td>Jugoso</td>
+      <td>Oscar Núñez</td>
+      <td>oscar.nunez@email.com</td>
+      <td>Salmon a la Parrilla</td>
+      <td>$ 22.50</td>
+    </tr>
+    <tr>
+      <td>39</td>
+      <td>5</td>
+      <td>Café fuerte y rico</td>
+      <td>Sofía León</td>
+      <td>sofia.leon@email.com</td>
+      <td>Café Espresso</td>
+      <td>$ 2.50</td>
+    </tr>
+    <tr>
+      <td>40</td>
+      <td>3</td>
+      <td>Un poco caro</td>
+      <td>Ara perez</td>
+      <td>lopezara@email.com</td>
+      <td>Café Espresso</td>
+      <td>$ 2.50</td>
+    </tr>
+    <tr>
+      <td>41</td>
+      <td>5</td>
+      <td>Porción generosa</td>
+      <td>Juan Pérez</td>
+      <td>juan.perez@email.com</td>
+      <td>Chilaquiles Verdes</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>42</td>
+      <td>2</td>
+      <td>Falta sazón</td>
+      <td>Carlos Rodríguez</td>
+      <td>carlos.rodriguez@email.com</td>
+      <td>Chilaquiles Verdes</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>43</td>
+      <td>4</td>
+      <td>Buen desayuno</td>
+      <td>Ana Martínez</td>
+      <td>ana.martinez@email.com</td>
+      <td>Chilaquiles Verdes</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>44</td>
+      <td>5</td>
+      <td>Pasta al dente</td>
+      <td>Luis Sánchez</td>
+      <td>luis.sanchez@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>45</td>
+      <td>2</td>
+      <td>Mucha grasa</td>
+      <td>Laura López</td>
+      <td>laura.lopez@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>46</td>
+      <td>4</td>
+      <td>Recomendado</td>
+      <td>Pedro Gómez</td>
+      <td>pedro.gomez@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>47</td>
+      <td>5</td>
+      <td>Alitas crujientes</td>
+      <td>Elena Díaz</td>
+      <td>elena.diaz@email.com</td>
+      <td>Alitas BBQ</td>
+      <td>$ 12.00</td>
+    </tr>
+    <tr>
+      <td>48</td>
+      <td>3</td>
+      <td>Salsa muy picante</td>
+      <td>Sergio Torres</td>
+      <td>sergio.torres@email.com</td>
+      <td>Alitas BBQ</td>
+      <td>$ 12.00</td>
+    </tr>
+    <tr>
+      <td>49</td>
+      <td>4</td>
+      <td>Buena entrada</td>
+      <td>Isabel Ruiz</td>
+      <td>isabel.ruiz@email.com</td>
+      <td>Alitas BBQ</td>
+      <td>$ 12.00</td>
+    </tr>
+    <tr>
+      <td>50</td>
+      <td>5</td>
+      <td>Vino excelente</td>
+      <td>David Vázquez</td>
+      <td>david.vazquez@email.com</td>
+      <td>Vino Tinto Copa</td>
+      <td>$ 9.00</td>
+    </tr>
+    <tr>
+      <td>51</td>
+      <td>2</td>
+      <td>Copa mal servida</td>
+      <td>Marta Castro</td>
+      <td>marta.castro@email.com</td>
+      <td>Vino Tinto Copa</td>
+      <td>$ 9.00</td>
+    </tr>
+    <tr>
+      <td>52</td>
+      <td>5</td>
+      <td>Sopa reconfortante</td>
+      <td>Javier Morales</td>
+      <td>javier.morales@email.com</td>
+      <td>Sopa de Tortilla</td>
+      <td>$ 6.00</td>
+    </tr>
+    <tr>
+      <td>53</td>
+      <td>3</td>
+      <td>Le faltaba sal</td>
+      <td>Lucía Ortiz</td>
+      <td>lucia.ortiz@email.com</td>
+      <td>Sopa de Tortilla</td>
+      <td>$ 6.00</td>
+    </tr>
+    <tr>
+      <td>54</td>
+      <td>5</td>
+      <td>Hamburguesa masiva</td>
+      <td>Diego Gutiérrez</td>
+      <td>diego.gutierrez@email.com</td>
+      <td>Hamburguesa Gourmet</td>
+      <td>$ 13.50</td>
+    </tr>
+    <tr>
+      <td>55</td>
+      <td>2</td>
+      <td>Pan seco</td>
+      <td>Carmen Reyes</td>
+      <td>carmen.reyes@email.com</td>
+      <td>Hamburguesa Gourmet</td>
+      <td>$ 13.50</td>
+    </tr>
+    <tr>
+      <td>56</td>
+      <td>5</td>
+      <td>Carne premium</td>
+      <td>Pablo Jiménez</td>
+      <td>pablo.jimenez@email.com</td>
+      <td>Hamburguesa Gourmet</td>
+      <td>$ 13.50</td>
+    </tr>
+    <tr>
+      <td>57</td>
+      <td>4</td>
+      <td>Bruschetta clásica</td>
+      <td>Adriana Silva</td>
+      <td>adriana.silva@email.com</td>
+      <td>Bruschetta</td>
+      <td>$ 7.50</td>
+    </tr>
+    <tr>
+      <td>58</td>
+      <td>2</td>
+      <td>Pocas rebanadas</td>
+      <td>Oscar Núñez</td>
+      <td>oscar.nunez@email.com</td>
+      <td>Bruschetta</td>
+      <td>$ 7.50</td>
+    </tr>
+    <tr>
+      <td>59</td>
+      <td>5</td>
+      <td>Cerveza bien fría</td>
+      <td>Sofía León</td>
+      <td>sofia.leon@email.com</td>
+      <td>Cerveza Artesanal</td>
+      <td>$ 5.50</td>
+    </tr>
+    <tr>
+      <td>60</td>
+      <td>3</td>
+      <td>Variedad limitada</td>
+      <td>Ara perez</td>
+      <td>lopezara@email.com</td>
+      <td>Cerveza Artesanal</td>
+      <td>$ 5.50</td>
+    </tr>
+    <tr>
+      <td>61</td>
+      <td>4</td>
+      <td>Flan suave</td>
+      <td>Juan Pérez</td>
+      <td>juan.perez@email.com</td>
+      <td>Flan de la Casa</td>
+      <td>$ 5.50</td>
+    </tr>
+    <tr>
+      <td>62</td>
+      <td>2</td>
+      <td>Muy pequeño</td>
+      <td>Carlos Rodríguez</td>
+      <td>carlos.rodriguez@email.com</td>
+      <td>Flan de la Casa</td>
+      <td>$ 5.50</td>
+    </tr>
+    <tr>
+      <td>63</td>
+      <td>4</td>
+      <td>Ensalada fresca</td>
+      <td>Ana Martínez</td>
+      <td>ana.martinez@email.com</td>
+      <td>Ensalada Caesar</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>64</td>
+      <td>3</td>
+      <td>Mucho aderezo</td>
+      <td>Luis Sánchez</td>
+      <td>luis.sanchez@email.com</td>
+      <td>Ensalada Caesar</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>65</td>
+      <td>5</td>
+      <td>Omelette perfecto</td>
+      <td>Laura López</td>
+      <td>laura.lopez@email.com</td>
+      <td>Omelette de Champiñones</td>
+      <td>$ 9.50</td>
+    </tr>
+    <tr>
+      <td>66</td>
+      <td>2</td>
+      <td>Poco queso</td>
+      <td>Pedro Gómez</td>
+      <td>pedro.gomez@email.com</td>
+      <td>Omelette de Champiñones</td>
+      <td>$ 9.50</td>
+    </tr>
+    <tr>
+      <td>67</td>
+      <td>5</td>
+      <td>Tiramisú auténtico</td>
+      <td>Elena Díaz</td>
+      <td>elena.diaz@email.com</td>
+      <td>Tiramisú</td>
+      <td>$ 8.00</td>
+    </tr>
+    <tr>
+      <td>68</td>
+      <td>4</td>
+      <td>Brownie tibio</td>
+      <td>Sergio Torres</td>
+      <td>sergio.torres@email.com</td>
+      <td>Brownie con Helado</td>
+      <td>$ 7.00</td>
+    </tr>
+    <tr>
+      <td>69</td>
+      <td>5</td>
+      <td>Exquisito</td>
+      <td>Isabel Ruiz</td>
+      <td>isabel.ruiz@email.com</td>
+      <td>Brownie con Helado</td>
+      <td>$ 7.00</td>
+    </tr>
+    <tr>
+      <td>70</td>
+      <td>5</td>
+      <td>Limonada natural</td>
+      <td>David Vázquez</td>
+      <td>david.vazquez@email.com</td>
+      <td>Limonada Imperial</td>
+      <td>$ 3.50</td>
+    </tr>
+    <tr>
+      <td>71</td>
+      <td>5</td>
+      <td>Una delicia sin duda, las patatas en su punto</td>
+      <td>Juan Pérez</td>
+      <td>juan.perez@email.com</td>
+      <td>patatas fritas</td>
+      <td>$ 10000.00</td>
+    </tr>
+    <tr>
+      <td>72</td>
+      <td>5</td>
+      <td>La mejor pasta que he probado</td>
+      <td>David Vázquez</td>
+      <td>david.vazquez@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>73</td>
+      <td>3</td>
+      <td>Un poco frio el salmon</td>
+      <td>Marta Castro</td>
+      <td>marta.castro@email.com</td>
+      <td>Salmon a la Parrilla</td>
+      <td>$ 22.50</td>
+    </tr>
+    <tr>
+      <td>74</td>
+      <td>5</td>
+      <td>El postre estaba increible</td>
+      <td>Javier Morales</td>
+      <td>javier.morales@email.com</td>
+      <td>Cheesecake de Fresa</td>
+      <td>$ 6.50</td>
+    </tr>
+    <tr>
+      <td>75</td>
+      <td>5</td>
+      <td>Volvere por los tacos</td>
+      <td>Lucía Ortiz</td>
+      <td>lucia.ortiz@email.com</td>
+      <td>Tacos de Pastor</td>
+      <td>$ 10.50</td>
+    </tr>
+    <tr>
+      <td>76</td>
+      <td>2</td>
+      <td>No me gusto la ensalada</td>
+      <td>Diego Gutiérrez</td>
+      <td>diego.gutierrez@email.com</td>
+      <td>Ensalada Caesar</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>77</td>
+      <td>5</td>
+      <td>Cafe muy aromático</td>
+      <td>Carmen Reyes</td>
+      <td>carmen.reyes@email.com</td>
+      <td>Café Espresso</td>
+      <td>$ 2.50</td>
+    </tr>
+    <tr>
+      <td>78</td>
+      <td>5</td>
+      <td>La carne estaba en su punto</td>
+      <td>Pablo Jiménez</td>
+      <td>pablo.jimenez@email.com</td>
+      <td>Corte New York</td>
+      <td>$ 25.99</td>
+    </tr>
+    <tr>
+      <td>79</td>
+      <td>2</td>
+      <td>Mucho tiempo de espera</td>
+      <td>Adriana Silva</td>
+      <td>adriana.silva@email.com</td>
+      <td>Hamburguesa Gourmet</td>
+      <td>$ 13.50</td>
+    </tr>
+    <tr>
+      <td>80</td>
+      <td>3</td>
+      <td>Porcion muy pequeña</td>
+      <td>Oscar Núñez</td>
+      <td>oscar.nunez@email.com</td>
+      <td>Nachos con Queso</td>
+      <td>$ 8.50</td>
+    </tr>
+    <tr>
+      <td>81</td>
+      <td>5</td>
+      <td>Los nachos son los mejores</td>
+      <td>Sofía León</td>
+      <td>sofia.leon@email.com</td>
+      <td>Nachos con Queso</td>
+      <td>$ 8.50</td>
+    </tr>
+    <tr>
+      <td>82</td>
+      <td>3</td>
+      <td>Muy picante para mi</td>
+      <td>Ara perez</td>
+      <td>lopezara@email.com</td>
+      <td>Chilaquiles Verdes</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>83</td>
+      <td>5</td>
+      <td>Desayuno muy completo</td>
+      <td>Juan Pérez</td>
+      <td>juan.perez@email.com</td>
+      <td>Omelette de Champiñones</td>
+      <td>$ 9.50</td>
+    </tr>
+    <tr>
+      <td>84</td>
+      <td>5</td>
+      <td>El tiramisu es una delicia</td>
+      <td>Carlos Rodríguez</td>
+      <td>carlos.rodriguez@email.com</td>
+      <td>Tiramisú</td>
+      <td>$ 8.00</td>
+    </tr>
+    <tr>
+      <td>85</td>
+      <td>4</td>
+      <td>Vino de buena calidad</td>
+      <td>Ana Martínez</td>
+      <td>ana.martinez@email.com</td>
+      <td>Vino Tinto Copa</td>
+      <td>$ 9.00</td>
+    </tr>
+    <tr>
+      <td>86</td>
+      <td>5</td>
+      <td>Cerveza bien fria</td>
+      <td>Luis Sánchez</td>
+      <td>luis.sanchez@email.com</td>
+      <td>Cerveza Artesanal</td>
+      <td>$ 5.50</td>
+    </tr>
+    <tr>
+      <td>87</td>
+      <td>2</td>
+      <td>La limonada estaba agria</td>
+      <td>Laura López</td>
+      <td>laura.lopez@email.com</td>
+      <td>Limonada Imperial</td>
+      <td>$ 3.50</td>
+    </tr>
+    <tr>
+      <td>88</td>
+      <td>4</td>
+      <td>Pan dulce muy fresco</td>
+      <td>Pedro Gómez</td>
+      <td>pedro.gomez@email.com</td>
+      <td>Brownie con Helado</td>
+      <td>$ 7.00</td>
+    </tr>
+    <tr>
+      <td>89</td>
+      <td>2</td>
+      <td>No vale lo que cuesta</td>
+      <td>Elena Díaz</td>
+      <td>elena.diaz@email.com</td>
+      <td>Bruschetta</td>
+      <td>$ 7.50</td>
+    </tr>
+    <tr>
+      <td>90</td>
+      <td>4</td>
+      <td>Sopa muy casera</td>
+      <td>Sergio Torres</td>
+      <td>sergio.torres@email.com</td>
+      <td>Sopa de Tortilla</td>
+      <td>$ 6.00</td>
+    </tr>
+    <tr>
+      <td>91</td>
+      <td>3</td>
+      <td>Alitas un poco quemadas</td>
+      <td>Isabel Ruiz</td>
+      <td>isabel.ruiz@email.com</td>
+      <td>Alitas BBQ</td>
+      <td>$ 12.00</td>
+    </tr>
+    <tr>
+      <td>92</td>
+      <td>5</td>
+      <td>Excelente servicio</td>
+      <td>Laura López</td>
+      <td>laura.lopez@email.com</td>
+      <td>Corte New York</td>
+      <td>$ 25.99</td>
+    </tr>
+    <tr>
+      <td>93</td>
+      <td>5</td>
+      <td>Muy recomendado</td>
+      <td>Carmen Reyes</td>
+      <td>carmen.reyes@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>94</td>
+      <td>4</td>
+      <td>Regresare con amigos</td>
+      <td>Javier Morales</td>
+      <td>javier.morales@email.com</td>
+      <td>Nachos con Queso</td>
+      <td>$ 8.50</td>
+    </tr>
+    <tr>
+      <td>95</td>
+      <td>2</td>
+      <td>El salmon estaba seco</td>
+      <td>Sergio Torres</td>
+      <td>sergio.torres@email.com</td>
+      <td>Salmon a la Parrilla</td>
+      <td>$ 22.50</td>
+    </tr>
+    <tr>
+      <td>96</td>
+      <td>5</td>
+      <td>Pasta muy cremosa</td>
+      <td>Carlos Rodríguez</td>
+      <td>carlos.rodriguez@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>97</td>
+      <td>4</td>
+      <td>Me encanto la musica</td>
+      <td>Juan Pérez</td>
+      <td>juan.perez@email.com</td>
+      <td>Hamburguesa Gourmet</td>
+      <td>$ 13.50</td>
+    </tr>
+    <tr>
+      <td>98</td>
+      <td>3</td>
+      <td>El flan es normal</td>
+      <td>David Vázquez</td>
+      <td>david.vazquez@email.com</td>
+      <td>Flan de la Casa</td>
+      <td>$ 5.50</td>
+    </tr>
+    <tr>
+      <td>99</td>
+      <td>4</td>
+      <td>Chilaquiles muy picosos</td>
+      <td>Luis Sánchez</td>
+      <td>luis.sanchez@email.com</td>
+      <td>Chilaquiles Verdes</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>100</td>
+      <td>5</td>
+      <td>Omelette bien servido</td>
+      <td>Sofía León</td>
+      <td>sofia.leon@email.com</td>
+      <td>Omelette de Champiñones</td>
+      <td>$ 9.50</td>
+    </tr>
+    <tr>
+      <td>101</td>
+      <td>2</td>
+      <td>Cafe algo quemado</td>
+      <td>Marta Castro</td>
+      <td>marta.castro@email.com</td>
+      <td>Café Espresso</td>
+      <td>$ 2.50</td>
+    </tr>
+    <tr>
+      <td>102</td>
+      <td>5</td>
+      <td>Tacos de diez</td>
+      <td>Ana Martínez</td>
+      <td>ana.martinez@email.com</td>
+      <td>Tacos de Pastor</td>
+      <td>$ 10.50</td>
+    </tr>
+    <tr>
+      <td>103</td>
+      <td>5</td>
+      <td>Corte NY espectacular</td>
+      <td>Diego Gutiérrez</td>
+      <td>diego.gutierrez@email.com</td>
+      <td>Corte New York</td>
+      <td>$ 25.99</td>
+    </tr>
+    <tr>
+      <td>104</td>
+      <td>3</td>
+      <td>Precios algo altos</td>
+      <td>Adriana Silva</td>
+      <td>adriana.silva@email.com</td>
+      <td>Tiramisú</td>
+      <td>$ 8.00</td>
+    </tr>
+    <tr>
+      <td>105</td>
+      <td>4</td>
+      <td>Brownie muy dulce</td>
+      <td>Lucía Ortiz</td>
+      <td>lucia.ortiz@email.com</td>
+      <td>Brownie con Helado</td>
+      <td>$ 7.00</td>
+    </tr>
+    <tr>
+      <td>106</td>
+      <td>5</td>
+      <td>Limonada refrescante</td>
+      <td>Elena Díaz</td>
+      <td>elena.diaz@email.com</td>
+      <td>Limonada Imperial</td>
+      <td>$ 3.50</td>
+    </tr>
+    <tr>
+      <td>107</td>
+      <td>3</td>
+      <td>La burger estaba ok</td>
+      <td>Pedro Gómez</td>
+      <td>pedro.gomez@email.com</td>
+      <td>Hamburguesa Gourmet</td>
+      <td>$ 13.50</td>
+    </tr>
+    <tr>
+      <td>108</td>
+      <td>1</td>
+      <td>Ensalada muy marchita</td>
+      <td>Pablo Jiménez</td>
+      <td>pablo.jimenez@email.com</td>
+      <td>Ensalada Caesar</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>109</td>
+      <td>5</td>
+      <td>Vino tinto excelente</td>
+      <td>Ara perez</td>
+      <td>lopezara@email.com</td>
+      <td>Vino Tinto Copa</td>
+      <td>$ 9.00</td>
+    </tr>
+    <tr>
+      <td>110</td>
+      <td>4</td>
+      <td>Bruschetta deliciosa</td>
+      <td>Laura López</td>
+      <td>laura.lopez@email.com</td>
+      <td>Bruschetta</td>
+      <td>$ 7.50</td>
+    </tr>
+    <tr>
+      <td>111</td>
+      <td>5</td>
+      <td>Sopa de tortilla top</td>
+      <td>Isabel Ruiz</td>
+      <td>isabel.ruiz@email.com</td>
+      <td>Sopa de Tortilla</td>
+      <td>$ 6.00</td>
+    </tr>
+    <tr>
+      <td>112</td>
+      <td>2</td>
+      <td>No habia mesa disponible</td>
+      <td>Oscar Núñez</td>
+      <td>oscar.nunez@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>113</td>
+      <td>2</td>
+      <td>Pasta fria</td>
+      <td>Javier Morales</td>
+      <td>javier.morales@email.com</td>
+      <td>Pasta Carbonara</td>
+      <td>$ 14.00</td>
+    </tr>
+    <tr>
+      <td>114</td>
+      <td>5</td>
+      <td>Amo el cheesecake</td>
+      <td>Luis Sánchez</td>
+      <td>luis.sanchez@email.com</td>
+      <td>Cheesecake de Fresa</td>
+      <td>$ 6.50</td>
+    </tr>
+    <tr>
+      <td>115</td>
+      <td>4</td>
+      <td>Buena musica y comida</td>
+      <td>Carlos Rodríguez</td>
+      <td>carlos.rodriguez@email.com</td>
+      <td>Nachos con Queso</td>
+      <td>$ 8.50</td>
+    </tr>
+    <tr>
+      <td>116</td>
+      <td>5</td>
+      <td>Salmon muy fresco</td>
+      <td>Juan Pérez</td>
+      <td>juan.perez@email.com</td>
+      <td>Salmon a la Parrilla</td>
+      <td>$ 22.50</td>
+    </tr>
+    <tr>
+      <td>117</td>
+      <td>2</td>
+      <td>Tacos frios</td>
+      <td>Ara perez</td>
+      <td>lopezara@email.com</td>
+      <td>Tacos de Pastor</td>
+      <td>$ 10.50</td>
+    </tr>
+    <tr>
+      <td>118</td>
+      <td>5</td>
+      <td>La mejor cerveza</td>
+      <td>Ana Martínez</td>
+      <td>ana.martinez@email.com</td>
+      <td>Cerveza Artesanal</td>
+      <td>$ 5.50</td>
+    </tr>
+    <tr>
+      <td>119</td>
+      <td>3</td>
+      <td>Porcion de fruta pequeña</td>
+      <td>Diego Gutiérrez</td>
+      <td>diego.gutierrez@email.com</td>
+      <td>Chilaquiles Verdes</td>
+      <td>$ 11.00</td>
+    </tr>
+    <tr>
+      <td>120</td>
+      <td>3</td>
+      <td>Omelette algo salado</td>
+      <td>Carmen Reyes</td>
+      <td>carmen.reyes@email.com</td>
+      <td>Omelette de Champiñones</td>
+      <td>$ 9.50</td>
+    </tr>
+    <tr>
+      <td>121</td>
+      <td>5</td>
+      <td>Desayuno excelente</td>
+      <td>David Vázquez</td>
+      <td>david.vazquez@email.com</td>
+      <td>Chilaquiles Verdes</td>
+      <td>$ 11.00</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#tabla_analisis').DataTable();
+            });
+        </script>
+    </body>
+    </html>
+    
