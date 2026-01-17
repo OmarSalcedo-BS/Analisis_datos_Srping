@@ -1,38 +1,38 @@
 import pandas as pd
+import requests
 
+URL_API = "http://localhost:8080/api/calificaciones"
 
-RUTA_ARCHIVO = "datos/datos.csv"
-RUTA_AUTORES = "datos/autores_clasificacion.csv"
 
 def cargar_datos() -> pd.DataFrame:
     """
-    Carga del archivo principal
+    Carga los datos desde la API y los retorna como un DataFrame.
     """
     try:
-        df = pd.read_csv(RUTA_ARCHIVO, on_bad_lines='skip')
-        print(f"Datos cargados correctamente desde: {RUTA_ARCHIVO}")
-        return df
-    except FileNotFoundError:
-        print(f"Error: No se encontró el archivo: {RUTA_ARCHIVO}")
-        return pd.DataFrame()
-
-
-def cargar_datos_secundarios() -> pd.DataFrame:
-    """
-    Carga del archivo secundario para hacer un merge de datos
-
-    """
-    try:
-        df = pd.read_csv(RUTA_AUTORES)
+        response = requests.get(URL_API)
+        response.raise_for_status()
+        datos_raw = response.json()
         
-        df['Nombre_Autor'] = df['Nombre_Autor'].str.lower().str.strip()
-        df['Clasificacion'] = df['Clasificacion'].str.lower().str.strip()
-        print(f"Datos secundarios cargados correctamente desde: {RUTA_AUTORES}")
-        return df
-    except FileNotFoundError:
-        print(f"Error: No se encontró el archivo: {RUTA_AUTORES}")
+        lista_procesada = []
+        
+        for p in datos_raw:
+            # Extraemos las puntuaciones de la lista anidada
+            puntuaciones = [c['puntuacion'] for c in p.get('calificaciones', [])]
+            
+            # Calculamos el promedio (si no hay calificaciones, ponemos 0)
+            promedio = sum(puntuaciones) / len(puntuaciones) if puntuaciones else 0
+            
+            lista_procesada.append({
+                'nombre': p['nombre'],
+                'precio': p['precio'],
+                'promedio_calificacion': promedio,
+                'total_votos': len(puntuaciones)
+            })
+            
+        return pd.DataFrame(lista_procesada)
+    except Exception as e:
+        print(f"Error: {e}")
         return pd.DataFrame()
-
 
 
 def manejar_nulos(df: pd.DataFrame) -> pd.DataFrame:
