@@ -84,14 +84,3 @@ def estandarizar_datos(df: pd.DataFrame) -> pd.DataFrame:
     print("Texto estandarizado y precios formateados.")
     return df_procesado
 
-
-if __name__ == "__main__":
-    # Bloque de prueba
-    df = cargar_datos()
-    if not df.empty:
-        df = manejar_nulos(df)
-        df = estandarizar_datos(df)
-        print("\nDataFrame Resultante:")
-        print(df.tail())
-    else:
-        print("No se pudieron cargar datos para la prueba.")
