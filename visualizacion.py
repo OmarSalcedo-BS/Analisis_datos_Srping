@@ -25,7 +25,14 @@ def graficar_raking_calidad(df, folder="resultados"):
     # Ordenamos de mejor a peor
     df_sorted = df.sort_values(by="promedio_calificacion", ascending=False)
 
-    sns.barplot(data=df_sorted, x="promedio_calificacion", y="nombre", palette="magma")
+    sns.barplot(
+    data=df_sorted,
+    x="promedio_calificacion",
+    y="nombre",
+    hue="nombre",
+    palette="magma",
+    legend=False
+)
 
     plt.title("Raking de calidad de los platillos")
     plt.xlim(0, 5)
@@ -120,7 +127,14 @@ def graficar_clientes_frecuentes(
     # Tomamos solo los top 10 para que no se amontone el gráfico
     top_10 = df.head(10)
 
-    sns.barplot(data=top_10, x="Platillos_Distintos", y="Cliente", palette="viridis")
+    sns.barplot(
+    data=top_10,
+    x="Platillos_Distintos",
+    y="Cliente",
+    hue="Cliente",
+    palette="viridis",
+    legend=False
+)
 
     plt.title("Top 10 Clientes: Diversidad de Experiencia en el Menú", fontsize=14)
     plt.xlabel("Número de Platillos Diferentes Calificados")
