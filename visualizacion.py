@@ -147,3 +147,66 @@ def graficar_clientes_frecuentes(
     plt.savefig(output_path)
     plt.close()
     return output_path
+
+def graficar_distribucion_calificaciones(df, folder="resultados"):
+    """
+    Gráfico que muestra cuántas calificaciones hay de cada puntuación (1 a 5).
+    """
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    path = f"{folder}/distribucion_calificaciones.png"
+    plt.figure(figsize=(8, 5))
+
+    sns.countplot(
+        data=df,
+        x="puntuacion",
+        hue="puntuacion",
+        palette="coolwarm",
+        legend=False
+    )
+
+    plt.title("Distribución de Calificaciones")
+    plt.xlabel("Puntuación")
+    plt.ylabel("Cantidad de Calificaciones")
+
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.close()
+    return path
+
+
+def graficar_precio_promedio_por_calificacion(df, folder="resultados"):
+    """
+    Gráfico de barras que muestra el precio promedio según la calificación.
+    """
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    path = f"{folder}/precio_promedio_por_calificacion.png"
+    plt.figure(figsize=(8, 5))
+
+    df_group = (
+        df.groupby("puntuacion")["precio"]
+        .mean()
+        .reset_index()
+    )
+
+    sns.barplot(
+        data=df_group,
+        x="puntuacion",
+        y="precio",
+        hue="puntuacion",
+        palette="viridis",
+        legend=False
+    )
+
+    plt.title("Precio Promedio por Calificación")
+    plt.xlabel("Calificación")
+    plt.ylabel("Precio Promedio ($)")
+
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.close()
+    return path
+

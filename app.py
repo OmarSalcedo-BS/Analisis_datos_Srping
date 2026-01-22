@@ -11,7 +11,11 @@ from visualizacion import (
     graficar_raking_calidad,
     graficar_precio_vs_calidad,
     graficar_clientes_frecuentes,
+    graficar_distribucion_calificaciones,
+    graficar_precio_promedio_por_calificacion
 )
+
+
 
 
 """
@@ -59,6 +63,9 @@ def generar_reporte():
 
     img_raking = graficar_raking_calidad(df_analisis)
     img_preciovscalidad = graficar_precio_vs_calidad(df_analisis)
+    img_distribucion = graficar_distribucion_calificaciones(df)
+    img_precio_promedio = graficar_precio_promedio_por_calificacion(df)
+
 
     # Obtener datso especificos para fidelidad
     df_fidelidad = obtener_datos_fidelidad()
@@ -86,23 +93,40 @@ def generar_reporte():
         <title>Reporte Sabor Urbano</title>
         <link rel="stylesheet" href="estilos.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        
     </head>
+    
+    
     <body>
         <h1>Reporte de Análisis Del restaurante</h1>
         
         <div class="container-graficos">
             <div class="card">
                 <h3>Ranking de Calidad</h3>
-                <img src="{img_raking}" width="100%">
+                <img src="{img_raking}" width="100%" class="zoomable">
             </div>
             <div class="card">
                 <h3>Análisis de Precio</h3>
-                <img src="{img_preciovscalidad}" width="100%">
+                <img src="{img_preciovscalidad}" width="100%" class="zoomable">
             </div>
             <div class="card">
                 <h3>Análisis de Clientes Frecuentes</h3>
-                <img src="{img_clientesFrecuentes}" width="100%">
+                <img src="{img_clientesFrecuentes}" width="100%" class="zoomable">
             </div>
+            <div class="card">
+                <h3>Distribución de Calificaciones</h3>
+                <img src="{img_distribucion}" width="100%" class="zoomable">
+            </div>
+            <div class="card">
+                <h3>Precio Promedio por Calificación</h3>
+                <img src="{img_precio_promedio}" width="100%" class="zoomable">
+            </div>
+        </div>
+
+        <!-- Modal para ampliar imagen -->
+        <div id="imgModal" style="display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.8);">
+            <span id="closeModal" style="position:absolute;top:20px;right:35px;color:#fff;font-size:40px;font-weight:bold;cursor:pointer;">&times;</span>
+            <img id="modalImg" style="margin:5% auto;display:block;max-width:80%;max-height:80%;">
         </div>
 
         <h2>Detalle de los Datos</h2>
@@ -116,7 +140,24 @@ def generar_reporte():
             $(document).ready(function() {{
                 $('#tabla_analisis').DataTable();
             }});
+
+            // Modal funcionalidad
+            document.querySelectorAll('.zoomable').forEach(function(img) {{
+                img.onclick = function() {{
+                    document.getElementById('imgModal').style.display = "block";
+                    document.getElementById('modalImg').src = this.src;
+                }};
+            }});
+            document.getElementById('closeModal').onclick = function() {{
+                document.getElementById('imgModal').style.display = "none";
+            }};
+            window.onclick = function(event) {{
+                if (event.target == document.getElementById('imgModal')) {{
+                    document.getElementById('imgModal').style.display = "none";
+                }}
+            }};
         </script>
+        
     </body>
     </html>
     """
