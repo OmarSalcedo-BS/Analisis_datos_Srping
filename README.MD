@@ -1,267 +1,229 @@
-# Restaurante Sabor Urbano - Análisis de Datos
+🍽️ Restaurante Sabor Urbano – Análisis de Datos con Python y Spring Boot
+📌 Descripción General
 
-## Descripción del Programa
+Este proyecto consiste en una aplicación de análisis de datos en Python que consume información desde una API REST desarrollada en Spring Boot, procesa los datos y genera visualizaciones y un reporte HTML interactivo.
 
-Esta es una aplicación de análisis de datos en Python que realiza limpieza, preparación y análisis datos extraidos
-desde la API REST desarrollada en Spring Boot por lo que esta funciona en conjunto y debe ser inciada:
+El sistema funciona de manera integrada:
 
-- **Cargar datos** Desde los endpoints de la API REST
-- **Limpiar y estandarizar datos** (manejo de valores nulos, normalización de texto)
-- **Realizar análisis estadísticos** mediante operaciones de filtrado y comparaciones
-- **Generar Graficos con datos procesados** Con esto se podran realizar comparativas de platos
-  populares, comentarios y calificaciones
+Spring Boot expone los datos del restaurante mediante endpoints REST.
 
-### Características Principales:
+Python consume estos endpoints para:
 
-1. **Módulo de limpieza (data_clean.py)**:
-   - Carga de datos desde endpoints de la API REST
-   - Manejo de valores nulos (eliminación de filas críticas, relleno de valores faltantes)
-   - Estandarización de texto (conversión a minúsculas, eliminación de espacios extra)
-   - Extracción de datos de fidelidad de clientes
-   - Preparación de DataFrames agregados para análisis específicos
+Limpiar y preparar los datos
 
-2. **Script principal (app.py)**:
-   - Integración del módulo de limpieza y visualización
-   - Generación automática de un reporte HTML interactivo (`reporte.html`)
-   - Orquestación del flujo de datos: Carga -> Limpieza -> Análisis -> Visualización
+Realizar análisis estadísticos
 
-3. **Módulo de gráficos (visualizacion.py)**:
-   - Generación de gráficos estadísticos con **Seaborn** y **Matplotlib**:
-     - **Ranking de Calidad**: Gráfico de barras de los platillos mejor valorados.
-     - **Matriz de Valor**: Gráfico de dispersión (Scatter Plot) relacionando Precio vs Calidad.
-     - **Fidelidad de Clientes**: Análisis de los clientes que han probado más variedad de platillos.
+Generar gráficos
 
-4. **Estilos y Presentación (estilos.css)**:
-   - Hoja de estilos moderna para el reporte HTML, asegurando una presentación profesional y limpia de los datos.
+Construir un reporte visual en HTML
 
----
+⚠️ Importante:
+La API REST de Spring Boot debe estar ejecutándose previamente para que el análisis en Python funcione correctamente.
 
-## Paso a Paso: Instalación y Configuración
+🎯 Objetivos del Proyecto
 
-### **PASO 1: Crear el Entorno Virtual**
+Consumir datos reales desde una API REST
 
-Un entorno virtual es un espacio aislado donde se instalan las dependencias del proyecto sin afectar el Python global.
+Aplicar técnicas de limpieza y transformación de datos
 
-#### Crear el entorno:
+Analizar calificaciones, precios y comportamiento de clientes
 
-```powershell
+Generar visualizaciones estadísticas claras
+
+Presentar resultados mediante un reporte HTML profesional
+
+🧩 Arquitectura del Proyecto
+Spring Boot (API REST)
+        ↓
+   Requests (Python)
+        ↓
+ Limpieza y Análisis
+        ↓
+ Visualizaciones
+        ↓
+   Reporte HTML
+
+🗂️ Estructura del Proyecto
+Analisis_datos_Spring/
+│
+├── app.py                  # Script principal
+├── data_clean.py           # Limpieza y preparación de datos
+├── visualizacion.py        # Generación de gráficos
+├── estilos.css             # Estilos del reporte HTML
+├── requirements.txt        # Dependencias del proyecto
+├── resultados/             # Gráficos y reporte generado
+│   ├── rankingCalidad.png
+│   ├── precio_vs_calidad.png
+│   ├── clientes_frecuentes.png
+│   └── reporte.html
+└── venv/                   # Entorno virtual (NO subir a Git)
+
+⚙️ Requisitos Previos
+
+Python 3.10 o superior
+
+API REST de Spring Boot ejecutándose
+
+Acceso al endpoint:
+
+http://localhost:8080/api/calificaciones
+
+🧪 Tecnologías Utilizadas
+Backend
+
+Spring Boot (API REST)
+
+Hibernate / JPA
+
+MySQL
+
+Análisis de Datos
+
+Python
+
+Pandas
+
+NumPy
+
+Requests
+
+Visualización
+
+Matplotlib
+
+Seaborn
+
+🛠️ Instalación y Configuración
+🔹 PASO 1: Crear el Entorno Virtual
 python -m venv venv
-```
 
-**¿Qué hace este comando?**
 
-- `-m venv`: Usa el módulo venv de Python
-- `venv`: Crea una carpeta llamada "venv" con el entorno virtual
+📌 Esto crea un entorno aislado para las dependencias del proyecto.
 
-**Resultado esperado**: Se crea una carpeta `venv` en tu proyecto (esto puede tardar 10-30 segundos)
-
----
-
-### **PASO 2: Activar el Entorno Virtual**
-
-#### En PowerShell:
-
-```powershell
+🔹 PASO 2: Activar el Entorno Virtual
+PowerShell
 .\venv\Scripts\Activate.ps1
-```
 
-#### En Símbolo del Sistema (cmd):
-
-```cmd
+CMD
 venv\Scripts\activate.bat
-```
 
-**¿Qué hace este comando?**
 
-- Activa el entorno virtual aislado
-- Los paquetes instalados solo afectarán este entorno
+✔️ Resultado esperado:
 
-**Resultado esperado**: Tu línea de comando debe mostrar `(venv)` al inicio:
+(venv) C:\ruta\del\proyecto>
 
-```powershell
-(venv) C:\Users\disenoydesarrollo\Documents\Omar\analisis_datos>
-```
+🔹 PASO 3: Instalar Dependencias
 
----
+Con el entorno virtual activado:
 
-### **PASO 3: Instalar las Dependencias**
+pip install -r requirements.txt
 
-Con el entorno virtual activado, instala todos los paquetes requeridos:
+📦 Dependencias Principales
 
-```powershell
-pip install -r requeriments.txt
-```
+numpy → Cálculos numéricos
 
-**¿Qué hace este comando?**
+pandas → Análisis y manipulación de datos
 
-- Lee el archivo `requeriments.txt`
-- Instala las versiones específicas de cada paquete necesario:
-  - **numpy**: Procesamiento numérico
-  - **pandas**: Análisis y manipulación de datos
-  - **python-dateutil**: Manejo de fechas
-  - **pytz**: Información de zonas horarias
-  - **six**: Compatibilidad Python 2/3
-  - **tzdata**: Datos de zonas horarias
-  - **Seaborn**: Generación de gráficos
-  - **matplotlib**: Generación de gráficos
-  - **os**: Manejo de archivos y carpetas
-  - **requests**: Hacer peticiones HTTP
+matplotlib → Gráficos base
 
-**Resultado esperado**: Mensaje similar a "Successfully installed..."
+seaborn → Visualizaciones estadísticas
 
-```powershell
-Collecting numpy==2.3.5
-Downloading numpy-2.3.5-cp312-cp312-win_amd64.whl...
-...
-Successfully installed numpy-2.3.5 pandas-2.3.3 ...
-```
+requests → Consumo de API REST
 
----
+⚠️ os NO se instala, es parte de la librería estándar de Python.
 
-### **PASO 4: Verificar la Instalación (Opcional)**
-
-Para asegurar que todo se instaló correctamente:
-
-```powershell
+🔹 PASO 4: Verificar Instalación (Opcional)
 pip list
-```
 
-**Resultado esperado**: Debes ver los paquetes instalados listados:
+🔹 PASO 5: Ejecutar el Proyecto
 
-```
-Package            Version
------------------- ---------
-numpy              2.3.5
-pandas             2.3.3
-python-dateutil    2.9.0.post0
-pytz               2025.2
-seaborn            0.13.2
-matplotlib         3.10.8
-os                 0.1.0
-requests           2.32.3
-**Otros paquetes que se instalan con pandas**
-...
-```
+⚠️ Antes de ejecutar Python, asegúrate de que Spring Boot esté corriendo.
 
----
+Luego ejecuta:
 
-### **PASO 5: Ejecutar el Programa**
-
-Con el entorno virtual activado y las dependencias instaladas:
-
-```powershell
 python app.py
-```
 
-**¿Qué hace este comando?**
+✅ Resultado Esperado
 
-- Ejecuta el script principal `app.py`
-- Carga los datos desde los archivos CSV
-- Realiza todas las transformaciones y análisis
-- Muestra los resultados en la consola
+Se generan automáticamente los gráficos en la carpeta resultados/
 
-**Resultado esperado**:
+Se crea el archivo:
 
-- Se generarán las imágenes de los gráficos en la carpeta `resultados/`.
-- Se creará un archivo `reporte.html` en la raíz del proyecto.
-- Mensajes de confirmación en la consola:
+resultados/reporte.html
 
-```
+
+En consola se muestran mensajes como:
+
 Valores nulos manejados correctamente.
-Texto estandarizado y precios formateados.
-```
+Texto estandarizado correctamente.
 
-- **¡Importante!**: Abre el archivo `reporte.html` en tu navegador para ver el análisis completo.
 
----
+📌 Abre reporte.html en tu navegador para ver el análisis completo.
 
-## Desactivar el Entorno Virtual
+📊 Análisis y Visualizaciones Generadas
+1️⃣ Ranking de Calidad de Platillos
 
-Cuando termines de trabajar, desactiva el entorno virtual:
+Gráfico de barras
 
-```powershell
-deactivate
-```
+Muestra los platillos mejor valorados
 
-**Resultado esperado**: Desaparece `(venv)` del inicio de tu línea de comando:
+Facilita la identificación de productos estrella
 
-```powershell
-C:\Users\disenoydesarrollo\Documents\Omar\analisis_datos>
-```
+2️⃣ Matriz de Valor: Precio vs Calificación
 
----
+Gráfico de dispersión
 
-## Resumen de Comandos
+Relaciona precio y satisfacción
 
-| Acción                           | Comando                                                       |
-| -------------------------------- | ------------------------------------------------------------- |
-| **Navegar al proyecto**          | `cd C:\Users\disenoydesarrollo\Documents\Omar\analisis_datos` |
-| **Crear entorno virtual**        | `python -m venv venv`                                         |
-| **Activar entorno (PowerShell)** | `.\venv\Scripts\Activate.ps1`                                 |
-| **Activar entorno (cmd)**        | `venv\Scripts\activate.bat`                                   |
-| **Instalar dependencias**        | `pip install -r requeriments.txt`                             |
-| **Ejecutar el programa**         | `python app.py`                                               |
-| **Desactivar entorno**           | `deactivate`                                                  |
-| **Ver paquetes instalados**      | `pip list`                                                    |
+Tamaño del punto = cantidad de votos
 
----
+Permite detectar oportunidades y riesgos comerciales
 
-## Resultados y Análisis Visual
+3️⃣ Fidelidad de Clientes
 
-El programa genera un reporte visual (`reporte.html`) que incluye:
+Gráfico de barras
 
-### 1. Ranking de Calidad (Ranking de Calidad)
+Muestra los clientes que han probado más variedad de platillos
 
-**Visualización**: Gráfico de barras horizontal.
-**Hallazgo**: Permite identificar rápidamente cuáles son los platillos "estrella" del menú (puntuaciones cercanas a 5.0) y cuáles necesitan mejoras.
+Útil para estrategias de fidelización
 
-### 2. Matriz de Valor (Precio vs Calidad)
+4️⃣ Tabla de Datos Detallados
 
-**Visualización**: Gráfico de dispersión (Scatter Plot).
-**Hallazgo**:
+Tabla HTML interactiva
 
-- Muestra la relación entre el costo del platillo y la satisfacción del cliente.
-- Ayuda a detectar platillos caros con baja calificación (riesgo) o platillos económicos con alta calificación (oportunidad de valor).
-- El tamaño de las burbujas indica la **popularidad** (total de votos).
+Permite:
 
-### 3. Fidelidad de Clientes (Clientes Frecuentes)
+Buscar
 
-**Visualización**: Gráfico de barras.
-**Hallazgo**: Destaca a los clientes que han probado una mayor variedad de platillos, útil para programas de fidelización.
+Ordenar
 
-### 4. Tabla de Datos Detallada
+Filtrar información
 
-**Visualización**: Tabla interactiva (DataTables).
-**Funcionalidad**: Permite buscar, filtrar y ordenar los datos crudos procesados directamente desde el navegador.
+📄 Archivos Clave
+Archivo	Descripción
+app.py	Orquesta todo el flujo del análisis
+data_clean.py	Limpieza, transformación y agregaciones
+visualizacion.py	Gráficos estadísticos
+estilos.css	Estilos visuales del reporte
+reporte.html	Resultado final
+📌 Notas Importantes
 
----
+✅ Activar siempre el entorno virtual
+✅ Spring Boot debe estar activo
+✅ No se modifican datos en la base de datos
+✅ venv/ no debe subirse a GitHub
+✅ Proyecto basado en consumo de API REST real
 
-## Archivos del Proyecto
+👨‍💻 Autor
 
-- **app.py**: Script principal que orquesta la ejecución, genera las rutas y construye el HTML.
-- **data_clean.py**: Lógica de negocio para limpieza, transformación y agregación de datos.
-- **visualizacion.py**: Librería personalizada para la generación de gráficos con Seaborn.
-- **estilos.css**: Definiciones de diseño para el reporte final.
-- **reporte.html**: (Generado) El producto final visualizable por el usuario.
+Proyecto desarrollado para la asignatura de Análisis de Datos
+Integración Python + Spring Boot
 
----
+Autor: Omar Salcedo, Yhorman Escobar.
+Fecha: Enero 2026
 
-## Notas Importantes
+🟢 Estado del Proyecto
 
-✅ **Siempre activa el entorno virtual antes de ejecutar el programa**
-✅ **El archivo `requeriments.txt` asegura que todos tengan las mismas versiones**
-✅ **Los datos se procesan en memoria (el programa no modifica los CSV originales)**
-✅ **La carpeta `venv` no debe subirse a GitHub (se incluye en .gitignore)**
-✅ **El archivo `reporte.html` se genera en la carpeta `resultados`**
-✅ **Este proyecto funciona con una API REST desarrollada en Spring Boot Que se debe iniciar previamente**
-
----
-
-## Autor
-
-Proyecto desarrollado como parte del análisis de datos en Python.
-Omar salcedo
-
----
-
-**Última actualización**: Enero 2026
+✔️ Funcional
+✔️ Integrado con API REST
+✔️ Listo para evaluación académica

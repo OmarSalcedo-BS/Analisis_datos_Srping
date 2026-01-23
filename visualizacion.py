@@ -25,7 +25,14 @@ def graficar_raking_calidad(df, folder="resultados"):
     # Ordenamos de mejor a peor
     df_sorted = df.sort_values(by="promedio_calificacion", ascending=False)
 
-    sns.barplot(data=df_sorted, x="promedio_calificacion", y="nombre", palette="magma")
+    sns.barplot(
+    data=df_sorted,
+    x="promedio_calificacion",
+    y="nombre",
+    hue="nombre",
+    palette="magma",
+    legend=False
+)
 
     plt.title("Raking de calidad de los platillos")
     plt.xlim(0, 5)
@@ -120,7 +127,14 @@ def graficar_clientes_frecuentes(
     # Tomamos solo los top 10 para que no se amontone el gráfico
     top_10 = df.head(10)
 
-    sns.barplot(data=top_10, x="Platillos_Distintos", y="Cliente", palette="viridis")
+    sns.barplot(
+    data=top_10,
+    x="Platillos_Distintos",
+    y="Cliente",
+    hue="Cliente",
+    palette="viridis",
+    legend=False
+)
 
     plt.title("Top 10 Clientes: Diversidad de Experiencia en el Menú", fontsize=14)
     plt.xlabel("Número de Platillos Diferentes Calificados")
@@ -133,3 +147,66 @@ def graficar_clientes_frecuentes(
     plt.savefig(output_path)
     plt.close()
     return output_path
+
+def graficar_distribucion_calificaciones(df, folder="resultados"):
+    """
+    Gráfico que muestra cuántas calificaciones hay de cada puntuación (1 a 5).
+    """
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    path = f"{folder}/distribucion_calificaciones.png"
+    plt.figure(figsize=(8, 5))
+
+    sns.countplot(
+        data=df,
+        x="puntuacion",
+        hue="puntuacion",
+        palette="coolwarm",
+        legend=False
+    )
+
+    plt.title("Distribución de Calificaciones")
+    plt.xlabel("Puntuación")
+    plt.ylabel("Cantidad de Calificaciones")
+
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.close()
+    return path
+
+
+def graficar_precio_promedio_por_calificacion(df, folder="resultados"):
+    """
+    Gráfico de barras que muestra el precio promedio según la calificación.
+    """
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    path = f"{folder}/precio_promedio_por_calificacion.png"
+    plt.figure(figsize=(8, 5))
+
+    df_group = (
+        df.groupby("puntuacion")["precio"]
+        .mean()
+        .reset_index()
+    )
+
+    sns.barplot(
+        data=df_group,
+        x="puntuacion",
+        y="precio",
+        hue="puntuacion",
+        palette="viridis",
+        legend=False
+    )
+
+    plt.title("Precio Promedio por Calificación")
+    plt.xlabel("Calificación")
+    plt.ylabel("Precio Promedio ($)")
+
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.close()
+    return path
+
